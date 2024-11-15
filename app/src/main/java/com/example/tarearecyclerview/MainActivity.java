@@ -1,6 +1,9 @@
 package com.example.tarearecyclerview;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
 import com.example.tarearecyclerview.Contacto;
 
 import androidx.activity.EdgeToEdge;
@@ -14,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdaptadorContacto.OnItemClickListener {
+
+    private ArrayList <Contacto> agenda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        ArrayList <Contacto> agenda = new ArrayList<>(Arrays.asList(new Contacto[]{
+        agenda = new ArrayList<>(Arrays.asList(new Contacto[]{
                 new Contacto(R.drawable.hombre1, "734 567 890", "juan.gonzalez@example.com", "González Serrano", "Juan"),
                 new Contacto(R.drawable.mujer1, "612 345 678", "maria.lopez@example.com", "López Sánchez", "María"),
                 new Contacto(R.drawable.hombre2, "745 678 901", "carlos.ortega@example.com", "Ortega Romero", "Carlos"),
@@ -50,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 new Contacto(R.drawable.mujer12, "723 456 789", "eva.gomez@example.com", "Gómez Navarro", "Eva")
         }));
 
-        AdaptadorContacto adaptadorContacto = new AdaptadorContacto(agenda);
+        AdaptadorContacto adaptadorContacto = new AdaptadorContacto(agenda, this);
 
         RecyclerView rvContactos = findViewById(R.id.rv_contactos);
 
@@ -60,4 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        Contacto contacto = agenda.get(position);
+        Toast.makeText(this, contacto.getNombre() + " " + contacto.getApellidos() + "\n" + contacto.getTelefono(), Toast.LENGTH_SHORT).show();
+    }
 }

@@ -14,9 +14,11 @@ import java.util.ArrayList;
 public class AdaptadorContacto  extends RecyclerView.Adapter <AdaptadorContacto.ContactoViewHolder> {
 
     ArrayList <Contacto> agenda;
+    OnItemClickListener onItemClickListener;
 
-    public AdaptadorContacto(ArrayList<Contacto> agenda) {
+    public AdaptadorContacto(ArrayList<Contacto> agenda, OnItemClickListener onItemClickListener) {
         this.agenda = agenda;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -59,8 +61,22 @@ public class AdaptadorContacto  extends RecyclerView.Adapter <AdaptadorContacto.
             tv_apellidos = itemView.findViewById(R.id.tv_apellidos);
             tv_correo = itemView.findViewById(R.id.tv_correo);
             tv_telefono = itemView.findViewById(R.id.tv_telefono);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemClickListener != null) {
+                        onItemClickListener.onItemClick(v, getAdapterPosition());
+                    }
+                }
+            });
+
         }
 
+    }
+
+    public interface OnItemClickListener {
+        public void onItemClick (View view, int position);
     }
 
 }
